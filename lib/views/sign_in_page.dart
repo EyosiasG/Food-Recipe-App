@@ -1,32 +1,29 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:foodrecipe/views/sign_in_page.dart';
-import 'package:foodrecipe/widgets/textbox.dart';
+import 'package:foodrecipe/views/sign_up_page.dart';
 
+import '../widgets/textbox.dart';
 import 'home_screen.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class SignIn extends StatefulWidget {
+  const SignIn({super.key});
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignIn> createState() => _SignInState();
 }
 
-class _SignUpState extends State<SignUp> {
-  TextEditingController fullNameTextEditingController = TextEditingController();
+class _SignInState extends State<SignIn> {
+
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
-  TextEditingController confirmPasswordTextEditingController = TextEditingController();
-
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Padding(
-        padding: const EdgeInsets.all(30.0),
-        child: SingleChildScrollView(
+      body: SingleChildScrollView(
+        child:Padding(
+          padding: const EdgeInsets.all(30.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,12 +32,12 @@ class _SignUpState extends State<SignUp> {
               Center(
                 child: SizedBox(
                   height: 250,
-                  child: Image.asset('images/sign-up.jpg'),
+                  child: Image.asset('images/sign-in.jpg'),
                 ),
               ),
               const SizedBox(height: 15),
               const Text(
-                "Welcome to Food Rec",
+                "Welcome Back,",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -48,33 +45,29 @@ class _SignUpState extends State<SignUp> {
               ),
               const SizedBox(height: 5),
               const Text(
-                "Let's get you all set up!",
+                "Sign In to continue to Food Rec!",
                 style: TextStyle(
                   color: Colors.grey,
                 ),
                 textAlign: TextAlign.start,
               ),
               const SizedBox(height: 10,),
-              MyTextBox(controller: fullNameTextEditingController, hintText: 'Full Name', icon: Icons.drive_file_rename_outline),
-              const SizedBox(height: 25,),
               MyTextBox(controller: emailTextEditingController, hintText: 'Email', icon: Icons.drive_file_rename_outline),
               const SizedBox(height: 25,),
               MyTextBox(controller: passwordTextEditingController, hintText: 'Password', icon: Icons.drive_file_rename_outline),
-              const SizedBox(height: 25,),
-              MyTextBox(controller: confirmPasswordTextEditingController, hintText: 'Confirm Password', icon: Icons.drive_file_rename_outline),
               const SizedBox(height: 25,),
               SizedBox(
                 width: double.infinity,
                 height: 50,
                 child: ElevatedButton(onPressed: (){},
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orangeAccent
+                      backgroundColor: Colors.orangeAccent
                   ),
-                  child: const Text("SIGN UP",
+                  child: const Text("SIGN IN",
                     style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
                 ),
@@ -84,20 +77,20 @@ class _SignUpState extends State<SignUp> {
                 child: RichText(
                     text: TextSpan(children: <TextSpan>[
                       const TextSpan(
-                          text: "Already have an account? ",
+                          text: "Don't have an account? ",
                           style: TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w300,
                               fontFamily: 'Montserrat',
-                            color: Colors.black
-                           )),
+                              color: Colors.black
+                          )),
                       TextSpan(
-                          text: "Login",
+                          text: "Sign Up",
                           recognizer: TapGestureRecognizer()
                             ..onTap = () => Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (c) => const SignIn())),
+                                    builder: (c) => const SignUp())),
                           style: const TextStyle(
                               fontSize: 14.0,
                               fontWeight: FontWeight.w500,
@@ -106,9 +99,9 @@ class _SignUpState extends State<SignUp> {
                     ])),
               ),
             ],
-          )
-        ),
-      )
+          ),
+        )
+      ),
     );
   }
 }
