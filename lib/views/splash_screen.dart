@@ -5,6 +5,8 @@ import 'package:foodrecipe/views/home_screen.dart';
 import 'package:foodrecipe/views/sign_in_page.dart';
 import 'package:foodrecipe/views/sign_up_page.dart';
 
+import '../global.dart';
+
 class MySplashScreen extends StatefulWidget {
   const MySplashScreen({super.key});
 
@@ -16,7 +18,14 @@ class _MySplashScreenState extends State<MySplashScreen> {
 
   startTimer(){
     Timer(const Duration(seconds: 3) ,()async{
-      Navigator.push(context, MaterialPageRoute(builder: (c)=> const SignIn()));
+      if (fAuth.currentUser != null) {
+        currentFirebaseUser = fAuth.currentUser;
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const Home()));
+      } else {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const SignIn()));
+      }
     });
 
   }

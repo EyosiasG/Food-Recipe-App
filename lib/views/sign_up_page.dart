@@ -1,8 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodrecipe/views/sign_in_page.dart';
 import 'package:foodrecipe/widgets/textbox.dart';
 
+import '../global.dart';
 import 'home_screen.dart';
 
 class SignUp extends StatefulWidget {
@@ -18,7 +22,56 @@ class _SignUpState extends State<SignUp> {
   TextEditingController passwordTextEditingController = TextEditingController();
   TextEditingController confirmPasswordTextEditingController = TextEditingController();
 
+  Future<void> saveUserInfo() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext c) {
+          return const CircularProgressIndicator();
+        });
 
+    final User? firebaseUser = (await fAuth
+            .createUserWithEmailAndPassword(
+        email: emailTextEditingController.text.trim(),
+        password: passwordTextEditingController.text.trim(),
+    ).catchError((msg) {
+      Navigator.pop(context);
+      Fluttertoast.showToast(msg: "Error: $msg");
+      return msg;
+    })).user;
+
+    if(firebaseUser != null){
+      Map<String, dynamic> userMap = {
+        "id": firebaseUser.uid,
+        "fullName": fullNameTextEditingController.text.trim(),
+        "email": emailTextEditingController.text.trim(),
+      };
+
+      final FirebaseFirestore firestore = FirebaseFirestore.instance;
+      
+      firestore.collection('users').doc(firebaseUser.uid).set(userMap).then((value){
+        Fluttertoast.showToast(msg: 'User Account Created');
+        Navigator.push(
+            context, MaterialPageRoute(builder: (c) => const Home()));
+      }).catchError((e){
+        Navigator.pop(context);
+        Fluttertoast.showToast(msg: "$e");
+      });
+    }
+  }
+
+  void validateCredentials() {
+    if(fullNameTextEditingController.text.length < 3){
+      Fluttertoast.showToast(msg: "Name too short");
+    }else if(!emailTextEditingController.text.contains('@')){
+      Fluttertoast.showToast(msg: "Enter valid email address");
+    }else if(passwordTextEditingController.text.length < 8){
+      Fluttertoast.showToast(msg: "Password length must be above 8");
+    }else if(passwordTextEditingController.text != confirmPasswordTextEditingController.text){
+      Fluttertoast.showToast(msg: "Confirm Password!");
+    }else{
+      saveUserInfo();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +119,9 @@ class _SignUpState extends State<SignUp> {
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(onPressed: (){},
+                child: ElevatedButton(onPressed: (){
+                  validateCredentials();
+                },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orangeAccent
                   ),
@@ -111,4 +166,6 @@ class _SignUpState extends State<SignUp> {
       )
     );
   }
+
+
 }
