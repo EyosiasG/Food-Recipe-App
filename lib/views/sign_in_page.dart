@@ -1,7 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:foodrecipe/views/sign_up_page.dart';
 
+import '../global.dart';
 import '../widgets/textbox.dart';
 import 'home_screen.dart';
 
@@ -16,6 +19,55 @@ class _SignInState extends State<SignIn> {
 
   TextEditingController emailTextEditingController = TextEditingController();
   TextEditingController passwordTextEditingController = TextEditingController();
+
+  validateCredentials() async {
+    showDialog(
+        context: context,
+        builder: (BuildContext c) {
+          return const CircularProgressIndicator();
+        });
+
+    if(emailTextEditingController.text.trim() == null){
+      Fluttertoast.showToast(msg:"Fill out email");
+    }else if(passwordTextEditingController.text.trim() == null){
+      Fluttertoast.showToast(msg:"Fill out password");
+    }else{
+      try{
+        final User? firebaseUser = (await fAuth
+            .signInWithEmailAndPassword(
+          email: emailTextEditingController.text.trim(),
+          password: passwordTextEditingController.text.trim(),
+        ).catchError((msg) {
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg: "Error: $msg");
+        })).user;
+
+        if (firebaseUser != null) {
+          currentFirebaseUser = firebaseUser;
+          Fluttertoast.showToast(msg: "Login successful!");
+          // ignore: use_build_context_synchronously
+          Navigator.push(
+              context, MaterialPageRoute(builder: (c) => const Home()));
+        } else {
+          // ignore: use_build_context_synchronously
+          Navigator.pop(context);
+          Fluttertoast.showToast(msg: "Login not successful!");
+        }
+
+      }on FirebaseAuthException catch(e){
+        if (e.code == 'network-request-failed') {
+          return Fluttertoast.showToast(msg: 'No Internet Connection');
+        } else if (e.code == "wrong-password") {
+          return Fluttertoast.showToast(msg: 'Please Enter correct password');
+        } else if (e.code == 'user-not-found') {
+          return Fluttertoast.showToast(msg: 'Email not found');
+        } else if (e.code == 'too-many-requests') {
+          return Fluttertoast.showToast(
+              msg: 'Too many attempts please try later');
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,14 +104,16 @@ class _SignInState extends State<SignIn> {
                 textAlign: TextAlign.start,
               ),
               const SizedBox(height: 10,),
-              MyTextBox(controller: emailTextEditingController, hintText: 'Email', icon: Icons.drive_file_rename_outline),
+              MyTextBox(controller: emailTextEditingController, hintText: 'Email', icon: Icons.drive_file_rename_outline, obscure: false,),
               const SizedBox(height: 25,),
-              MyTextBox(controller: passwordTextEditingController, hintText: 'Password', icon: Icons.drive_file_rename_outline),
+              MyTextBox(controller: passwordTextEditingController, hintText: 'Password', icon: Icons.drive_file_rename_outline, obscure: true),
               const SizedBox(height: 25,),
               SizedBox(
                 width: double.infinity,
                 height: 50,
-                child: ElevatedButton(onPressed: (){},
+                child: ElevatedButton(onPressed: (){
+                  validateCredentials();
+                },
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.orangeAccent
                   ),

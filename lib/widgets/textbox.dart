@@ -4,11 +4,13 @@ class MyTextBox extends StatelessWidget {
   final TextEditingController controller;
   final String hintText;
   final IconData icon;
+  final bool obscure;
 
   const MyTextBox({
     required this.controller,
     required this.hintText,
     required this.icon,
+    required this.obscure,
   });
 
   @override
@@ -28,6 +30,7 @@ class MyTextBox extends StatelessWidget {
           borderSide: BorderSide(),
         ),
       ),
+      obscureText: obscure,
     );
   }
 }
