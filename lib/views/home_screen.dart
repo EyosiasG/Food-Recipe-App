@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:foodrecipe/widgets/categories_list.dart';
 
 import '../models/recipe.api.dart';
 import '../models/recipe.dart';
@@ -34,51 +35,60 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        actions: [
-          IconButton(
-              onPressed: (){},
-              icon: const Icon(Icons.menu))
-        ],
-      ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
-            children: [
-              const Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Find The Best Recipes\nFor Cooking',
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
+        child: Column(
+          children: [
+            const SizedBox(height: 15,),
+            Padding(
+              padding: const EdgeInsets.only(top:15.0, left: 15.0, right:15.0 ),
+              child: Column(
+                children: [
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Find The Best Recipes\nFor Cooking',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                  const SizedBox(height: 15,),
+                  MySearchBar(controller: searchEditingController),
+                  const SizedBox(height: 20,),
+                  const Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text("Categories",
+                    textAlign: TextAlign.start,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 14
+                      ),
+                    ),
+                  ),
+                  CategoriesListView(),
+                ],
               ),
-              MySearchBar(controller: searchEditingController),
-              Container(
-                child: _isLoading
-                    ? const Center(child: CircularProgressIndicator())
-                    : ListView.builder(
-                  shrinkWrap: true, // Added shrinkWrap property
-                  physics: const NeverScrollableScrollPhysics(), // Added physics property
-                  itemCount: _recipes.length,
-                  itemBuilder: (context, index) {
-                    return RecipeCard(
-                      title: _recipes[index].name,
-                      cookTime: _recipes[index].totalTime,
-                      rating: _recipes[index].rating.toString(),
-                      thumbnailUrl: _recipes[index].images,
-                    );
-                  },
-                ),
+            ),
+            Container(
+              child: _isLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : ListView.builder(
+                shrinkWrap: true, // Added shrinkWrap property
+                physics: const NeverScrollableScrollPhysics(), // Added physics property
+                itemCount: _recipes.length,
+                itemBuilder: (context, index) {
+                  return RecipeCard(
+                    title: _recipes[index].name,
+                    cookTime: _recipes[index].totalTime,
+                    rating: _recipes[index].rating.toString(),
+                    thumbnailUrl: _recipes[index].images,
+                  );
+                },
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

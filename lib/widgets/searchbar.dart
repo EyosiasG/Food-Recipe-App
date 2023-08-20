@@ -8,24 +8,21 @@ class MySearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.grey[200], // Light grey color
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        child: TextField(
-          controller: controller,
-          decoration: const InputDecoration(
-            prefixIcon: Icon(Icons.search_rounded),
-            hintText: 'Search For Recipes',
-            hintStyle: TextStyle(
-              fontSize: 12,
-            ),
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+    return  Container(
+      decoration: BoxDecoration(
+        color: Colors.grey[200], // Light grey color
+        borderRadius: BorderRadius.circular(15.0),
+      ),
+      child: TextField(
+        controller: controller,
+        decoration: const InputDecoration(
+          prefixIcon: Icon(Icons.search_rounded),
+          hintText: 'Search For Recipes',
+          hintStyle: TextStyle(
+            fontSize: 12,
           ),
+          border: InputBorder.none,
+          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
         ),
       ),
     );
