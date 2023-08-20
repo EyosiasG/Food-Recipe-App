@@ -20,6 +20,9 @@ class MySearchBar extends StatelessWidget {
           decoration: const InputDecoration(
             prefixIcon: Icon(Icons.search_rounded),
             hintText: 'Search For Recipes',
+            hintStyle: TextStyle(
+              fontSize: 12,
+            ),
             border: InputBorder.none,
             contentPadding: EdgeInsets.symmetric(vertical: 8.0),
           ),

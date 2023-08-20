@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../models/recipe.api.dart';
+import '../models/recipe.dart';
+import '../widgets/recipe_card.dart';
 import '../widgets/searchbar.dart';
 
 class Home extends StatefulWidget {
@@ -12,12 +15,27 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   TextEditingController searchEditingController = TextEditingController();
 
+  List<Recipe> _recipes = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    getRecipes();
+  }
+
+  Future<void> getRecipes() async {
+    _recipes = await RecipeApi.getRecipe();
+    setState(() {
+      _isLoading = false;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Food Recipe",)),
+        backgroundColor: Colors.white,
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
@@ -33,15 +51,31 @@ class _HomeState extends State<Home> {
             children: [
               const Align(
                 alignment: Alignment.centerLeft,
-                child:Text('Find The Best Recipes\nFor Cooking',
+                child: Text(
+                  'Find The Best Recipes\nFor Cooking',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                  ),),
+                  ),
+                ),
               ),
-
-              MySearchBar(
-                controller: searchEditingController,
+              MySearchBar(controller: searchEditingController),
+              Container(
+                child: _isLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : ListView.builder(
+                  shrinkWrap: true, // Added shrinkWrap property
+                  physics: const NeverScrollableScrollPhysics(), // Added physics property
+                  itemCount: _recipes.length,
+                  itemBuilder: (context, index) {
+                    return RecipeCard(
+                      title: _recipes[index].name,
+                      cookTime: _recipes[index].totalTime,
+                      rating: _recipes[index].rating.toString(),
+                      thumbnailUrl: _recipes[index].images,
+                    );
+                  },
+                ),
               ),
             ],
           ),
