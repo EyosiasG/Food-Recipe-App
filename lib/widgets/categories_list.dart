@@ -3,41 +3,52 @@ import 'package:flutter/material.dart';
 class CategoriesListView extends StatelessWidget {
   CategoriesListView({super.key});
 
-  final List<String> categories = [
-    'All',
-    'Breakfast',
-    'Dinner',
-    'Desserts',
-    'Fast-food',
-  ];
+  final Map<String, String> categories = {
+    'All': 'images/all.png',
+    'Breakfast':'images/breakfast.png',
+    'Lunch': 'images/lunch.png',
+    'Dinner':'images/dinner.png',
+    'Desserts':'images/dessert.png',
+    'Fast-food':'images/burger.png'
+  };
 
 
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 70,
+      height: 100,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
         itemBuilder: (context, index) {
-          return Container(
-            margin: const EdgeInsets.only(right: 15.0, top: 10.0, bottom: 10.0),
-            padding: const EdgeInsets.all(15.0),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(25.0),
-              border: Border.all(
-                color: Colors.orangeAccent, // Define the border color here
-                width: 1.0, // Define the border width if needed
-              ),
-            ),
-            child: Center(
-              child: Text(
-                categories[index],
-                style: const TextStyle(
-                  fontSize: 12,
+          String imageName = categories.keys.elementAt(index);
+          String imagePath = categories.values.elementAt(index);
+          return Padding(
+            padding: const EdgeInsets.only(top: 10.0, left: 10.0, right: 10.0),
+            child: Column(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: index == 1 ? Colors.greenAccent : Colors.white,
+                    borderRadius: BorderRadius.circular(5.0)
                 ),
-              ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Image.asset(imagePath, height: 30,),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Text(imageName,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+
+              ],
             ),
           );
         },

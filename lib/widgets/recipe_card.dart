@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class RecipeCard extends StatelessWidget {
   final String title;
@@ -8,100 +7,121 @@ class RecipeCard extends StatelessWidget {
   final String thumbnailUrl;
   const RecipeCard({
     super.key,
-   required this.title,
+    required this.title,
     required this.cookTime,
     required this.rating,
     required this.thumbnailUrl,
   });
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: MediaQuery.of(context).size.width,
-          height: 180,
-          decoration: BoxDecoration(
-            color: Colors.black,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.4),
-                offset: const Offset(
-                  0.0,
-                  10.0,
-                ),
-                blurRadius: 10.0,
-                spreadRadius: -6.0,
-              ),
-            ],
-            image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.15),
-                BlendMode.multiply,
-              ),
-              image: NetworkImage(thumbnailUrl),
-              fit: BoxFit.cover,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(
+            width: MediaQuery.of(context).size.width / 1.5,
+            height: MediaQuery.of(context).size.height / 4,
+            child: Image.network(
+              thumbnailUrl,
+              fit: BoxFit.cover, // You can also try BoxFit.fill
             ),
+
           ),
-        ),
-        const SizedBox(height: 5,),
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Column(
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 2,
+            textAlign: TextAlign.center,
+
+          ),
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Row(
+                children: [
+                  const Icon(
+                    Icons.star,
+                    color: Colors.yellow,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(rating),
+                ],
+              ),
+              SizedBox(width: 25,),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.schedule,
+                    color: Colors.greenAccent,
+                    size: 18,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(cookTime),
+                ],
+              )
+            ],
+          ),
+         /* Column(
+            children: [
+
+
               Align(
                 alignment: Alignment.bottomLeft,
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 2,
+                    textAlign: TextAlign.center,
+
                   ),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 2,
-                  textAlign: TextAlign.start,
                 ),
               ),
-              const SizedBox(height: 10,),
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Row(
                       children: [
-                        RatingBarIndicator(
-                          itemBuilder: (context, index) => const Icon(
-                            Icons.star,
-                            color: Colors.orange,
-                          ),
-                          rating: double.parse(rating),
-                          itemSize: 15,
-                          itemCount: 5,
+                        const Icon(
+                          Icons.star,
+                          color: Colors.yellow,
+                          size: 18,
                         ),
+                        const SizedBox(width: 7),
+                        Text(rating),
                       ],
                     ),
                     Row(
                       children: [
                         const Icon(
                           Icons.schedule,
-                          color: Colors.orangeAccent,
-                          size: 15,
+                          color: Colors.yellow,
+                          size: 18,
                         ),
                         const SizedBox(width: 7),
-                        Text(cookTime,
-                          style: const TextStyle(
-                            fontSize: 12,
-                          ),),
+                        Text(cookTime),
                       ],
                     )
                   ],
                 ),
               ),
             ],
-          ),
-        ),
-        const SizedBox(height: 10,)
-      ],
+          ),*/
+        ],
+      ),
     );
   }
 }

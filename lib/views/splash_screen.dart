@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:foodrecipe/views/home_screen.dart';
+import 'package:foodrecipe/views/main_screen.dart';
 import 'package:foodrecipe/views/sign_in_page.dart';
 import 'package:foodrecipe/views/sign_up_page.dart';
 
@@ -21,7 +22,7 @@ class _MySplashScreenState extends State<MySplashScreen> {
       if (fAuth.currentUser != null) {
         currentFirebaseUser = fAuth.currentUser;
         Navigator.push(
-            context, MaterialPageRoute(builder: (c) => const Home()));
+            context, MaterialPageRoute(builder: (c) => const MainScreen()));
       } else {
         Navigator.push(
             context, MaterialPageRoute(builder: (c) => const SignIn()));
